@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#cbd0d8</color>
-    <color name="colorPrimaryDark">#adb2ba</color>
+    <color name="colorPrimary">#8b8f9b</color>
+    <color name="colorPrimaryDark">#333438</color>
     <color name="colorAccent">#FF4081</color>
     <color name="bgColor">#FFFFFF</color>
     <color name="titleMovie">#000000</color>

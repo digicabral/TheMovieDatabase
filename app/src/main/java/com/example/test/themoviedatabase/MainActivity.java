@@ -5,11 +5,9 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.preference.ListPreference;
-import android.preference.PreferenceFragment;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -228,14 +226,17 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case R.id.menu_now_playing:
+                 writeSharedPreference(R.string.pref_now_playing);
                  loadJSON();
                  break;
 
             case R.id.menu_bestRated:
+                 writeSharedPreference(R.string.pref_highest_rated);
                  loadJSONTopRatedMovies();
                  break;
 
             case R.id.menu_most_popular:
+                writeSharedPreference(R.string.pref_most_popular);
                 loadJSONPopularMovies();
                 break;
 
@@ -245,33 +246,45 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         return true;
     }
 
+    public void writeSharedPreference(Integer key)
+    {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(getString(R.string.pref_sort_order_key), key);
+        editor.apply();
+    }
+
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s){
         checkSortOrder();
     }
 
     private void checkSortOrder(){
+        Integer preferenceDefault = 0;
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String sortOrder = preferences.getString(
-                this.getString(R.string.pref_sort_order_key),
-                this.getString(R.string.pref_most_popular));
-        if(sortOrder.equals(this.getString(R.string.pref_now_playing)))
-        {
-            Log.i("CART", sortOrder);
-            loadJSON();
-        }
-        if(sortOrder.equals(this.getString(R.string.pref_most_popular))){
-            Log.i("POPU", sortOrder);
+        Integer sortOrder = preferences.getInt(getString(R.string.pref_sort_order_key), preferenceDefault);
 
-            loadJSONPopularMovies();
-        }
-        if(sortOrder.equals(this.getString(R.string.pref_highest_rated)))
+        switch (sortOrder)
         {
-            Log.i("TOP", sortOrder);
-            loadJSONTopRatedMovies();
-        }
-        else{
-            Log.i("NONE", sortOrder);
+            case R.string.pref_now_playing:
+                loadJSONTopRatedMovies();
+                break;
+
+            case R.string.pref_most_popular:
+                loadJSONPopularMovies();
+                break;
+
+            case R.string.pref_highest_rated:
+                loadJSONTopRatedMovies();
+                break;
+
+            case 0:
+                loadJSON();
+                break;
+
+            default:
+                Toast.makeText(this, "Erro ao carregar Filmes!", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 

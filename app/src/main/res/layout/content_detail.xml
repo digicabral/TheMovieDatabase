@@ -36,6 +36,7 @@
                 android:layout_marginTop="@dimen/layout_margin_top"
                 android:textStyle="bold"
                 android:textSize="20sp"
+                android:textAlignment="center"
                 android:layout_below="@id/movieTitle"/>
 
             <TextView
@@ -58,6 +59,7 @@
                 android:padding="@dimen/padding_layout"
                 android:layout_marginTop="@dimen/layout_margin_top"
                 android:textSize="20sp"
+                android:textAlignment="center"
                 android:layout_below="@id/plot"/>
 
             <TextView
@@ -80,6 +82,7 @@
                 android:padding="@dimen/padding_layout"
                 android:layout_marginTop="@dimen/layout_margin_top"
                 android:textSize="20sp"
+                android:textAlignment="center"
                 android:layout_below="@id/rating"/>
 
             <TextView
@@ -87,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/release"
                 android:layout_marginLeft="@dimen/layout_margin_left"
-                android:text="@string/rating"
+                android:text="@string/release"
                 android:textAlignment="center"
                 android:layout_marginTop="@dimen/layout_margin_top2"
                 android:textStyle="bold"
@@ -100,6 +103,7 @@
                 android:id="@+id/releaseDate"
                 android:layout_marginLeft="@dimen/layout_margin_left"
                 android:padding="@dimen/padding_layout"
+                android:textAlignment="center"
                 android:layout_marginTop="@dimen/layout_margin_top"
                 android:textSize="20sp"
                 android:layout_below="@id/release"/>

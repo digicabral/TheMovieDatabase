@@ -3,7 +3,7 @@
     <string name="action_settings">Configurações</string>
     <string name="name_movie">Título do Filme</string>
     <string name="movie_details">Detalhes do filme</string>
-    <string name="plot">Mostrar Sinopse</string>
+    <string name="plot">Sinopse</string>
     <string name="rating">Avaliação do Usuário</string>
     <string name="release">Data de Lançamento</string>
     <string name="pref_sort_order_label">Ordem de Classificação</string>

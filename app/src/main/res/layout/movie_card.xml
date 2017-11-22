@@ -36,17 +36,6 @@
                 android:textColor="@color/titleMovie"
                 android:textSize="@dimen/movie_title"/>
 
-            <TextView
-                android:id="@id/userRating"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/title"
-                android:padding="@dimen/movie_title_padding"
-                android:paddingRight="@dimen/movie_title_padding"
-                android:paddingBottom="@dimen/user_rating_padding_bottom"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/user_rating"/>
-
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
