@@ -50,8 +50,11 @@ public class Movie {
     @SerializedName("vote_average")
     private Double voteAverage;
 
+    @SerializedName("overview")
+    private String overView;
 
-    public Movie(String posterPath, boolean adult, String releaseDate, List<Integer> genreIds, Integer id, String originalTitle, String originalLanguage, String title, String backdropPath, Double popularity, Integer voteCount, Boolean video, Double voteAverage) {
+
+    public Movie(String posterPath, boolean adult, String releaseDate, List<Integer> genreIds, Integer id, String originalTitle, String originalLanguage, String title, String backdropPath, Double popularity, Integer voteCount, Boolean video, Double voteAverage, String overView) {
         this.posterPath = posterPath;
         this.adult = adult;
         this.releaseDate = releaseDate;
@@ -65,6 +68,7 @@ public class Movie {
         this.voteCount = voteCount;
         this.video = video;
         this.voteAverage = voteAverage;
+        this.overView = overView;
     }
 
     String baseImageUrl = "https://image.tmdb.org/t/p/w500";
@@ -179,5 +183,13 @@ public class Movie {
 
     public void setBaseImageUrl(String baseImageUrl) {
         this.baseImageUrl = baseImageUrl;
+    }
+
+    public String getOverView() {
+        return overView;
+    }
+
+    public void setOverView(String overView) {
+        this.overView = overView;
     }
 }
