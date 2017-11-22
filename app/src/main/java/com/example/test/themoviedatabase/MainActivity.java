@@ -78,9 +78,11 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
 
+        //Converte a lista JSON em ArrayList
         movieList = new ArrayList<>();
         adapter = new MoviesAdapter(this, movieList);
 
+        //Responsividade da listagem
         if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
             recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         }
@@ -96,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadJSON(){
         try{
+            //Carrega o JSON criando o cliente e passando a key necessaria
             if(BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty())
             {
                 Toast.makeText(getApplicationContext(), "Por favor obtenha uma chave da API themovidedb.org!", Toast.LENGTH_SHORT).show();
@@ -108,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
             call.enqueue(new Callback<MovieResponse>() {
                 @Override
                 public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                    //Se o carregamento for bem sucedido joga a lista para o começo e o PD Desaparece
                     List<Movie> movies = response.body().getResults();
                     recyclerView.setAdapter(new MoviesAdapter(getApplicationContext(), movies));
                     recyclerView.smoothScrollToPosition(0);
@@ -118,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 @Override
+                //Se o carregamento resultar em erro o sistema exibe mensagem de erro
                 public void onFailure(Call<MovieResponse> call, Throwable t) {
                     Log.d("Erro", t.getMessage());
                     Toast.makeText(MainActivity.this, "Erro ao receber os dados.", Toast.LENGTH_SHORT).show();
