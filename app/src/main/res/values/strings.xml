@@ -10,5 +10,6 @@
     <string name="pref_sort_order_key">sortOrder</string>
     <string name="pref_most_popular">Mais Populares</string>
     <string name="pref_highest_rated">Notas Mais Altas</string>
+    <string name="pref_now_playing">Em cartaz</string>
 
 </resources>

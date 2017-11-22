@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/TheMovieDatabase.iml" filepath="$PROJECT_DIR$/.idea/TheMovieDatabase.iml" />
-      <module fileurl="file://C:\Users\CABRAL\AndroidStudioProjects\TheMovieDatabase\TheMovieDatabase.iml" filepath="C:\Users\CABRAL\AndroidStudioProjects\TheMovieDatabase\TheMovieDatabase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TheMovieDatabase.iml" filepath="$PROJECT_DIR$/TheMovieDatabase.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\CABRAL\AndroidStudioProjects\TheMovieDatabase\app\app.iml" filepath="C:\Users\CABRAL\AndroidStudioProjects\TheMovieDatabase\app\app.iml" />
     </modules>
   </component>
 </project>

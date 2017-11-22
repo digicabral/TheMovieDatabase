@@ -5,7 +5,12 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.preference.ListPreference;
+import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,14 +35,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
 
     private RecyclerView recyclerView;
     private MoviesAdapter adapter;
     private List<Movie> movieList;
     ProgressDialog progressDialog;
     private SwipeRefreshLayout swipeRefreshLayout;
-    public static final String LOG_TAG = MoviesAdapter.class.getName();
+    private String language = "pt-PT";
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -93,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
-        loadJSON();
+        checkSortOrder();
     }
 
     private void loadJSON(){
@@ -107,7 +112,85 @@ public class MainActivity extends AppCompatActivity {
             }
             Client Client = new Client();
             Service apiService = Client.getClient().create(Service.class);
-            Call<MovieResponse> call = apiService.getPopularMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN);
+            Call<MovieResponse> call = apiService.getInTheatreMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN, language);
+            call.enqueue(new Callback<MovieResponse>() {
+                @Override
+                public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                    //Se o carregamento for bem sucedido joga a lista para o começo e o PD Desaparece
+                    List<Movie> movies = response.body().getResults();
+                    recyclerView.setAdapter(new MoviesAdapter(getApplicationContext(), movies));
+                    recyclerView.smoothScrollToPosition(0);
+                    if(swipeRefreshLayout.isRefreshing()){
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                    progressDialog.dismiss();
+                }
+
+                @Override
+                //Se o carregamento resultar em erro o sistema exibe mensagem de erro
+                public void onFailure(Call<MovieResponse> call, Throwable t) {
+                    Log.d("Erro", t.getMessage());
+                    Toast.makeText(MainActivity.this, "Erro ao receber os dados.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }catch (Exception e)
+        {
+            Log.d("Erro", e.getMessage());
+            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void loadJSONTopRatedMovies(){
+        try{
+            //Carrega o JSON criando o cliente e passando a key necessaria
+            if(BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty())
+            {
+                Toast.makeText(getApplicationContext(), "Por favor obtenha uma chave da API themovidedb.org!", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+                return;
+            }
+            Client Client = new Client();
+            Service apiService = Client.getClient().create(Service.class);
+            Call<MovieResponse> call = apiService.getTopRatedMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN, language);
+            call.enqueue(new Callback<MovieResponse>() {
+                @Override
+                public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                    //Se o carregamento for bem sucedido joga a lista para o começo e o PD Desaparece
+                    List<Movie> movies = response.body().getResults();
+                    recyclerView.setAdapter(new MoviesAdapter(getApplicationContext(), movies));
+                    recyclerView.smoothScrollToPosition(0);
+                    if(swipeRefreshLayout.isRefreshing()){
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                    progressDialog.dismiss();
+                }
+
+                @Override
+                //Se o carregamento resultar em erro o sistema exibe mensagem de erro
+                public void onFailure(Call<MovieResponse> call, Throwable t) {
+                    Log.d("Erro", t.getMessage());
+                    Toast.makeText(MainActivity.this, "Erro ao receber os dados.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }catch (Exception e)
+        {
+            Log.d("Erro", e.getMessage());
+            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void loadJSONPopularMovies(){
+        try{
+            //Carrega o JSON criando o cliente e passando a key necessaria
+            if(BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty())
+            {
+                Toast.makeText(getApplicationContext(), "Por favor obtenha uma chave da API themovidedb.org!", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+                return;
+            }
+            Client Client = new Client();
+            Service apiService = Client.getClient().create(Service.class);
+            Call<MovieResponse> call = apiService.getPopularMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN, language);
             call.enqueue(new Callback<MovieResponse>() {
                 @Override
                 public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
@@ -144,11 +227,62 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
-            case R.id.menu_settings:
-                return true;
+            case R.id.menu_now_playing:
+                 loadJSON();
+                 break;
+
+            case R.id.menu_bestRated:
+                 loadJSONTopRatedMovies();
+                 break;
+
+            case R.id.menu_most_popular:
+                loadJSONPopularMovies();
+                break;
 
             default:
                 return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s){
+        checkSortOrder();
+    }
+
+    private void checkSortOrder(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String sortOrder = preferences.getString(
+                this.getString(R.string.pref_sort_order_key),
+                this.getString(R.string.pref_most_popular));
+        if(sortOrder.equals(this.getString(R.string.pref_now_playing)))
+        {
+            Log.i("CART", sortOrder);
+            loadJSON();
+        }
+        if(sortOrder.equals(this.getString(R.string.pref_most_popular))){
+            Log.i("POPU", sortOrder);
+
+            loadJSONPopularMovies();
+        }
+        if(sortOrder.equals(this.getString(R.string.pref_highest_rated)))
+        {
+            Log.i("TOP", sortOrder);
+            loadJSONTopRatedMovies();
+        }
+        else{
+            Log.i("NONE", sortOrder);
+        }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if(movieList.isEmpty()){
+            checkSortOrder();
+        }
+        else{
+
         }
     }
 
