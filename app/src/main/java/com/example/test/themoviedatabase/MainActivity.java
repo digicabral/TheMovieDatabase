@@ -146,13 +146,12 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             //Carrega o JSON criando o cliente e passando a key necessaria
             if(BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty())
             {
-                Toast.makeText(getApplicationContext(), "Por favor obtenha uma chave da API themovidedb.org!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.obtenha_chave, Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
                 return;
             }
             Client Client = new Client();
             Service apiService = Client.getClient().create(Service.class);
-
             Call<MovieResponse> call = null;
 
             switch(typeOfSearch)
@@ -173,7 +172,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     Toast.makeText(MainActivity.this, R.string.erro_ao_receber_dados, Toast.LENGTH_SHORT).show();
                     break;
             }
-
             call.enqueue(new Callback<MovieResponse>() {
                 @Override
                 public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
@@ -186,95 +184,14 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     }
                     progressDialog.dismiss();
                 }
-
                 @Override
                 //Se o carregamento resultar em erro o sistema exibe mensagem de erro
                 public void onFailure(Call<MovieResponse> call, Throwable t) {
-                    Log.d("Erro", t.getMessage());
                     Toast.makeText(MainActivity.this, R.string.erro_ao_receber_dados, Toast.LENGTH_SHORT).show();
                 }
             });
         }catch (Exception e)
         {
-            Log.d("Erro", e.getMessage());
-            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void loadJSONTopRatedMovies(){
-        try{
-            //Carrega o JSON criando o cliente e passando a key necessaria
-            if(BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty())
-            {
-                Toast.makeText(getApplicationContext(), "Por favor obtenha uma chave da API themovidedb.org!", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
-                return;
-            }
-            Client Client = new Client();
-            Service apiService = Client.getClient().create(Service.class);
-            Call<MovieResponse> call = apiService.getTopRatedMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN, language);
-            call.enqueue(new Callback<MovieResponse>() {
-                @Override
-                public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                    //Se o carregamento for bem sucedido joga a lista para o começo e o PD Desaparece
-                    List<Movie> movies = response.body().getResults();
-                    recyclerView.setAdapter(new MoviesAdapter(getApplicationContext(), movies));
-                    recyclerView.smoothScrollToPosition(0);
-                    if(swipeRefreshLayout.isRefreshing()){
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                    progressDialog.dismiss();
-                }
-
-                @Override
-                //Se o carregamento resultar em erro o sistema exibe mensagem de erro
-                public void onFailure(Call<MovieResponse> call, Throwable t) {
-                    Log.d("Erro", t.getMessage());
-                    Toast.makeText(MainActivity.this, "Erro ao receber os dados.", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }catch (Exception e)
-        {
-            Log.d("Erro", e.getMessage());
-            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void loadJSONPopularMovies(){
-        try{
-            //Carrega o JSON criando o cliente e passando a key necessaria
-            if(BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty())
-            {
-                Toast.makeText(getApplicationContext(), "Por favor obtenha uma chave da API themovidedb.org!", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
-                return;
-            }
-            Client Client = new Client();
-            Service apiService = Client.getClient().create(Service.class);
-            Call<MovieResponse> call = apiService.getPopularMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN, language);
-            call.enqueue(new Callback<MovieResponse>() {
-                @Override
-                public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                    //Se o carregamento for bem sucedido joga a lista para o começo e o PD Desaparece
-                    List<Movie> movies = response.body().getResults();
-                    recyclerView.setAdapter(new MoviesAdapter(getApplicationContext(), movies));
-                    recyclerView.smoothScrollToPosition(0);
-                    if(swipeRefreshLayout.isRefreshing()){
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                    progressDialog.dismiss();
-                }
-
-                @Override
-                //Se o carregamento resultar em erro o sistema exibe mensagem de erro
-                public void onFailure(Call<MovieResponse> call, Throwable t) {
-                    Log.d("Erro", t.getMessage());
-                    Toast.makeText(MainActivity.this, "Erro ao receber os dados.", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }catch (Exception e)
-        {
-            Log.d("Erro", e.getMessage());
             Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
@@ -284,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             //Carrega o JSON criando o cliente e passando a key necessaria
             if(BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty())
             {
-                Toast.makeText(getApplicationContext(), "Por favor obtenha uma chave da API themovidedb.org!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.obtenha_chave, Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
                 return;
             }
@@ -331,17 +248,17 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         switch (item.getItemId()){
             case R.id.menu_now_playing:
                  writeSharedPreference(R.string.pref_now_playing);
-                 loadJSON(R.id.menu_now_playing);
+                 loadJSON(R.string.pref_now_playing);
                  break;
 
             case R.id.menu_bestRated:
                  writeSharedPreference(R.string.pref_highest_rated);
-                 loadJSON(R.id.menu_bestRated);
+                 loadJSON(R.string.pref_highest_rated);
                  break;
 
             case R.id.menu_most_popular:
                 writeSharedPreference(R.string.pref_most_popular);
-                loadJSON(R.id.menu_most_popular);
+                loadJSON(R.string.pref_most_popular);
                 break;
 
             default:
@@ -398,9 +315,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         super.onResume();
         if(movieList.isEmpty()){
             checkSortOrder();
-        }
-        else{
-
         }
     }
 

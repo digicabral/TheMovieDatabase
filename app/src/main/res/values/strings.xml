@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TheMovieDatabase</string>
+    <string name="app_name">Alterdata TMDB</string>
     <string name="action_settings">Configurações</string>
     <string name="name_movie">Título do Filme</string>
     <string name="movie_details">Detalhes do filme</string>
@@ -14,6 +14,8 @@
     <string name="buscar_filme">Buscar Filme</string>
     <string name="insira_texto_busca">Insira o texto para busca!</string>
     <string name="app_bar_name">TMDB</string>
+    <string name="erro">Erro!</string>
     <string name="erro_ao_receber_dados">Erro ao receber os dados.</string>
     <string name="erro_ao_carregar_filmes">Erro ao carregar filmes!</string>
+    <string name="obtenha_chave">Por favor obtenha uma chave da API themovidedb.org!</string>
 </resources>
