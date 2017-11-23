@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         checkSortOrder();
     }
 
-    private void loadJSON(){
+    private void loadJSON(Integer typeOfSearch ){
         try{
             //Carrega o JSON criando o cliente e passando a key necessaria
             if(BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty())
@@ -152,7 +152,28 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             }
             Client Client = new Client();
             Service apiService = Client.getClient().create(Service.class);
-            Call<MovieResponse> call = apiService.getInTheatreMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN, language);
+
+            Call<MovieResponse> call = null;
+
+            switch(typeOfSearch)
+            {
+                case R.string.pref_now_playing:
+                    call = apiService.getInTheatreMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN, language);
+                    break;
+
+                case R.string.pref_most_popular:
+                    call = apiService.getPopularMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN, language);
+                    break;
+
+                case R.string.pref_highest_rated:
+                    call = apiService.getTopRatedMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN, language);
+                    break;
+
+                default:
+                    Toast.makeText(MainActivity.this, R.string.erro_ao_receber_dados, Toast.LENGTH_SHORT).show();
+                    break;
+            }
+
             call.enqueue(new Callback<MovieResponse>() {
                 @Override
                 public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
@@ -170,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 //Se o carregamento resultar em erro o sistema exibe mensagem de erro
                 public void onFailure(Call<MovieResponse> call, Throwable t) {
                     Log.d("Erro", t.getMessage());
-                    Toast.makeText(MainActivity.this, "Erro ao receber os dados.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.erro_ao_receber_dados, Toast.LENGTH_SHORT).show();
                 }
             });
         }catch (Exception e)
@@ -310,17 +331,17 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         switch (item.getItemId()){
             case R.id.menu_now_playing:
                  writeSharedPreference(R.string.pref_now_playing);
-                 loadJSON();
+                 loadJSON(R.id.menu_now_playing);
                  break;
 
             case R.id.menu_bestRated:
                  writeSharedPreference(R.string.pref_highest_rated);
-                 loadJSONTopRatedMovies();
+                 loadJSON(R.id.menu_bestRated);
                  break;
 
             case R.id.menu_most_popular:
                 writeSharedPreference(R.string.pref_most_popular);
-                loadJSONPopularMovies();
+                loadJSON(R.id.menu_most_popular);
                 break;
 
             default:
@@ -350,23 +371,24 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         switch (sortOrder)
         {
             case R.string.pref_now_playing:
-                loadJSONTopRatedMovies();
+                loadJSON(R.string.pref_now_playing);
                 break;
 
             case R.string.pref_most_popular:
-                loadJSONPopularMovies();
+                loadJSON(R.string.pref_most_popular);
                 break;
 
             case R.string.pref_highest_rated:
-                loadJSONTopRatedMovies();
+                loadJSON(R.string.pref_highest_rated);
                 break;
 
             case 0:
-                loadJSON();
+                //Carrega em cartaz
+                loadJSON(R.string.pref_now_playing);
                 break;
 
             default:
-                Toast.makeText(this, "Erro ao carregar Filmes!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.erro_ao_carregar_filmes, Toast.LENGTH_SHORT).show();
                 break;
         }
     }

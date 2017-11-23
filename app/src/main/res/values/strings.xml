@@ -14,4 +14,6 @@
     <string name="buscar_filme">Buscar Filme</string>
     <string name="insira_texto_busca">Insira o texto para busca!</string>
     <string name="app_bar_name">TMDB</string>
+    <string name="erro_ao_receber_dados">Erro ao receber os dados.</string>
+    <string name="erro_ao_carregar_filmes">Erro ao carregar filmes!</string>
 </resources>
