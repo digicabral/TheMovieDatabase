@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         if(getSupportActionBar()!=null)
         {
             toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
-            getSupportActionBar().setTitle("TMDB");
+            getSupportActionBar().setTitle(R.string.app_bar_name);
         }
         searchView = (MaterialSearchView)findViewById(R.id.search_view);
 
@@ -93,8 +93,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
-
+                if (newText!=null && !newText.isEmpty())
+                {
+                    loadBusca(newText);
+                }
                 return false;
             }
         });
