@@ -12,5 +12,5 @@
     <string name="pref_highest_rated">Notas Mais Altas</string>
     <string name="pref_now_playing">Em cartaz</string>
     <string name="buscar_filme">Buscar Filme</string>
-
+    <string name="insira_texto_busca">Insira o texto para busca!</string>
 </resources>

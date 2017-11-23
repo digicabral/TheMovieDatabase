@@ -55,13 +55,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         initViews();
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.searchToolbar);
-        setSupportActionBar(toolbar);
-        if(getSupportActionBar()!=null)
-        {
-            toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
-            getSupportActionBar().setTitle("TMDB");
-        }
-        searchView = (MaterialSearchView)findViewById(R.id.search_view);
+        initSearchToolbar(toolbar);
 
         swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.main_content);
         swipeRefreshLayout.setColorSchemeColors(android.R.color.holo_orange_dark);
@@ -72,6 +66,39 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 Toast.makeText(MainActivity.this, "Filmes Atualizados", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void initSearchToolbar(Toolbar toolbar) {
+
+        setSupportActionBar(toolbar);
+        if(getSupportActionBar()!=null)
+        {
+            toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
+            getSupportActionBar().setTitle("TMDB");
+        }
+        searchView = (MaterialSearchView)findViewById(R.id.search_view);
+
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (query != null && !query.isEmpty())
+                {
+                    loadBusca(query);
+                }
+                else{
+                    Toast.makeText(getActivity(), R.string.insira_texto_busca, Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+
+                return false;
+            }
+        });
+
     }
 
     public Activity getActivity(){
@@ -229,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         }
     }
 
-    private void loadBusca(){
+    private void loadBusca(String query){
         try{
             //Carrega o JSON criando o cliente e passando a key necessaria
             if(BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty())
@@ -240,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             }
             Client Client = new Client();
             Service apiService = Client.getClient().create(Service.class);
-            Call<MovieResponse> call = apiService.getSearchedMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN, language, "Iron");
+            Call<MovieResponse> call = apiService.getSearchedMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN, language, query);
             call.enqueue(new Callback<MovieResponse>() {
                 @Override
                 public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
@@ -292,10 +319,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             case R.id.menu_most_popular:
                 writeSharedPreference(R.string.pref_most_popular);
                 loadJSONPopularMovies();
-                break;
-
-            case R.id.menu_busca:
-                loadBusca();
                 break;
 
             default:
