@@ -17,4 +17,10 @@
         android:title="@string/pref_highest_rated"
         android:orderInCategory="300"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menu_busca"
+        android:title="Busca Filme"
+        android:orderInCategory="400"
+        app:showAsAction="never"/>
 </menu>

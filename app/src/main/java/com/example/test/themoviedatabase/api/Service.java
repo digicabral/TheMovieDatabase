@@ -21,4 +21,7 @@ public interface Service {
     @GET("movie/top_rated")
     Call<MovieResponse> getTopRatedMovies(@Query("api_key") String apiKey, @Query("language") String language);
 
+    @GET("search/movie")
+    Call<MovieResponse> getSearchedMovies(@Query("api_key") String apiKey, @Query("language") String language, @Query("query") String query);
+
 }

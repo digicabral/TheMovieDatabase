@@ -216,6 +216,47 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         }
     }
 
+    private void loadBusca(){
+        try{
+            //Carrega o JSON criando o cliente e passando a key necessaria
+            if(BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty())
+            {
+                Toast.makeText(getApplicationContext(), "Por favor obtenha uma chave da API themovidedb.org!", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+                return;
+            }
+            Client Client = new Client();
+            Service apiService = Client.getClient().create(Service.class);
+            Call<MovieResponse> call = apiService.getSearchedMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN, language, "Iron");
+            call.enqueue(new Callback<MovieResponse>() {
+                @Override
+                public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                        //Se o carregamento for bem sucedido joga a lista para o começo e o PD Desaparece
+                        List<Movie> movies = response.body().getResults();
+                        recyclerView.setAdapter(new MoviesAdapter(getApplicationContext(), movies));
+                        recyclerView.smoothScrollToPosition(0);
+                        if(swipeRefreshLayout.isRefreshing()){
+                            swipeRefreshLayout.setRefreshing(false);
+                        }
+                        progressDialog.dismiss();
+
+
+                }
+
+                @Override
+                //Se o carregamento resultar em erro o sistema exibe mensagem de erro
+                public void onFailure(Call<MovieResponse> call, Throwable t) {
+                    Log.d("Erro", t.getMessage());
+                    Toast.makeText(MainActivity.this, "Erro ao receber os dados.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }catch (Exception e)
+        {
+            Log.d("Erro", e.getMessage());
+            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -238,6 +279,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             case R.id.menu_most_popular:
                 writeSharedPreference(R.string.pref_most_popular);
                 loadJSONPopularMovies();
+                break;
+
+            case R.id.menu_busca:
+                loadBusca();
                 break;
 
             default:

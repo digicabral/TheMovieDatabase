@@ -35,6 +35,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0-RC0'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    compile 'com.github.mancj:MaterialSearchBar:0.6'
+    compile 'com.miguelcatalan:materialsearchview:1.4.0'
 
 }
