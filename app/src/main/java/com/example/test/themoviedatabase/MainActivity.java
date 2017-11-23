@@ -203,22 +203,29 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             {
                 Toast.makeText(getApplicationContext(), R.string.obtenha_chave, Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
-                return;
             }
             Client Client = new Client();
             Service apiService = Client.getClient().create(Service.class);
             Call<MovieResponse> call = apiService.getSearchedMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN, language, query);
+            final String queryWord = query;
             call.enqueue(new Callback<MovieResponse>() {
                 @Override
                 public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                         //Se o carregamento for bem sucedido joga a lista para o começo e o PD Desaparece
                         List<Movie> movies = response.body().getResults();
-                        recyclerView.setAdapter(new MoviesAdapter(getApplicationContext(), movies));
-                        recyclerView.smoothScrollToPosition(0);
-                        if(swipeRefreshLayout.isRefreshing()){
-                            swipeRefreshLayout.setRefreshing(false);
+                        if(movies.isEmpty())
+                        {
+                            Toast.makeText(MainActivity.this, "Nenhum resultado para "+ "'"+queryWord+"' ", Toast.LENGTH_SHORT).show();
                         }
-                        progressDialog.dismiss();
+                        else
+                        {
+                            recyclerView.setAdapter(new MoviesAdapter(getApplicationContext(), movies));
+                            recyclerView.smoothScrollToPosition(0);
+                            if(swipeRefreshLayout.isRefreshing()){
+                                swipeRefreshLayout.setRefreshing(false);
+                            }
+                         progressDialog.dismiss();
+                        }
                 }
 
                 @Override

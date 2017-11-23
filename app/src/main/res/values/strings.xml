@@ -18,4 +18,5 @@
     <string name="erro_ao_receber_dados">Erro ao receber os dados.</string>
     <string name="erro_ao_carregar_filmes">Erro ao carregar filmes!</string>
     <string name="obtenha_chave">Por favor obtenha uma chave da API themovidedb.org!</string>
+    <string name="nenhum_resultado">Nenhum resultado para</string>
 </resources>
