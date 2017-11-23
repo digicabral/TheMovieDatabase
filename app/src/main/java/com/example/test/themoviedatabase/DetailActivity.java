@@ -38,9 +38,9 @@ public class DetailActivity extends AppCompatActivity{
         releaseDate = (TextView) findViewById(R.id.releaseDate);
 
         Intent intentThatStartedThisActivity = getIntent();
-        if(intentThatStartedThisActivity.hasExtra("original_title")){
+        if(intentThatStartedThisActivity.hasExtra("title")){
             String thumbnail = getIntent().getExtras().getString("poster_path");
-            String movieName = getIntent().getExtras().getString("original_title");
+            String movieName = getIntent().getExtras().getString("title");
             String synopsis = getIntent().getExtras().getString("overview");
             String rating = getIntent().getExtras().getString("vote_average");
             String dateOfRelease = getIntent().getExtras().getString("release_date");

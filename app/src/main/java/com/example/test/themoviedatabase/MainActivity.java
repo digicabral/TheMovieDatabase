@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.preference.Preference;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -15,16 +15,19 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
 
 import com.example.test.themoviedatabase.adapter.MoviesAdapter;
 import com.example.test.themoviedatabase.api.Client;
 import com.example.test.themoviedatabase.api.Service;
 import com.example.test.themoviedatabase.model.Movie;
 import com.example.test.themoviedatabase.model.MovieResponse;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     ProgressDialog progressDialog;
     private SwipeRefreshLayout swipeRefreshLayout;
     private String language = "pt-PT";
+    MaterialSearchView searchView;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -49,6 +53,15 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         setContentView(R.layout.activity_main);
 
         initViews();
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.searchToolbar);
+        setSupportActionBar(toolbar);
+        if(getSupportActionBar()!=null)
+        {
+            toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
+            getSupportActionBar().setTitle("TMDB");
+        }
+        searchView = (MaterialSearchView)findViewById(R.id.search_view);
 
         swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.main_content);
         swipeRefreshLayout.setColorSchemeColors(android.R.color.holo_orange_dark);
@@ -239,8 +252,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                             swipeRefreshLayout.setRefreshing(false);
                         }
                         progressDialog.dismiss();
-
-
                 }
 
                 @Override
@@ -260,6 +271,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem item = menu.findItem(R.id.menu_busca);
+        searchView.setMenuItem(item);
         return true;
     }
 

@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_busca"
+        android:title="@string/buscar_filme"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_action_search"
+        />
+
     <item
         android:id="@+id/menu_now_playing"
         android:title="@string/pref_now_playing"
-        android:orderInCategory="100"
+        android:orderInCategory="200"
         app:showAsAction="never"/>
     <item
         android:id="@+id/menu_most_popular"
         android:title="@string/pref_most_popular"
-        android:orderInCategory="200"
+        android:orderInCategory="300"
         app:showAsAction="never"/>
 
     <item
         android:id="@+id/menu_bestRated"
         android:title="@string/pref_highest_rated"
-        android:orderInCategory="300"
-        app:showAsAction="never"/>
-
-    <item
-        android:id="@+id/menu_busca"
-        android:title="Busca Filme"
         android:orderInCategory="400"
         app:showAsAction="never"/>
+
 </menu>
