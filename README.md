@@ -15,6 +15,10 @@ O aplicativo consome uma API externa chamada TMDB, que possui informações sobr
 * Glide: Para a listagem de imagens
 * MaterialSearchView: Para a barra de busca
 
+## Link do para download do APK
+
+https://drive.google.com/open?id=1E7G7BSS7ePUFObzNdIcmMg7j8ts6tdAq
+
 ## Imagens do APP
 
 ![Busca de Filmes](https://lh3.googleusercontent.com/DPiriB3KQnO1aYcihtCfjq7pbgew24T6Un-7nwVhnEUGVM6qb1-dGDFDkjzJ3P3g6PhfkhdqzjxOXnYgh3NVy0fVB_fMSaqx20jov1hrOHNlcdms9vYbxEnGAugHpqKGXGJNeHXL07Sm0_RnWN5LjJpsiBlm_9D9Vhj19ZNWrB9R8zRWMyghKHoECAY3-D4NwaZb-N6U5gDq8H0cUGCNHnfYKszZXKDDJACG7_7Ynienwpt-0ZEJ6xPCC2_WLoRNXHSl6PBRumdPPciaz3MzjX9cg-wuMb5CYAwP2yZzZ_XCyAudD0rASA-RxQNL0fgWC9UTiJo4ga4h58S3Bjn7FTPOTFo2UIFRvRmP3msLDVKzLbY688AsU6xGYaQvgfSHJ1mn3ftKFd1iJ9G4u3yCMiQBDDZNlNkwTdryeOx1wf1_rEasssDfWgesr6izsDRv8kBaXeFTtl_brFz7y5RjEBkxDdtihBXvA9Yrn0J9fdNaTSVP6DnwBBO0x35Msrs1XwxoZr1juQSsD8gfK3rollS-q3uSDxfUvTXAkwDSh4tbP7vb0C8cIDAiCjHPatQwJ2QTIeuXkDyvPbQMGr7MMcqWHdQnAq9ZevOEMMs9SIP8JXle5f0WEoIU6aMnA5fKTpRQz15Jy_xTlipZbf0e61Z0t0J1Z2Du7Waz=w369-h656-no "Busca de Filmes")
