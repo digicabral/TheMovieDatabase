@@ -15,7 +15,7 @@ O aplicativo consome uma API externa chamada TMDB, que possui informações sobr
 * Glide: Para a listagem de imagens
 * MaterialSearchView: Para a barra de busca
 
-## Link do para download do APK
+## Link para download do APK
 
 https://drive.google.com/open?id=1E7G7BSS7ePUFObzNdIcmMg7j8ts6tdAq
 
